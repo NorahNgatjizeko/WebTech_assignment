@@ -15,7 +15,7 @@
     <% result = connection.exec("SELECT * FROM crops WHERE give_for <> '自家消費';")%>
     <% data = [] %>
     <% result.each do |record| %>
-      <%   data << "Bitter gourd length: #{record ["length"]}　Weight: #{record ["weight"]} Quality: #{ record ["quality"]} Sold to: #{record ["give_for"]} Trading date: #{ record ["date"]}"  %>
+      <%   data << "Bitter gourd length: #{record ["length"]}　Weight: #{record ["weight"]} Quality: #{record ["quality"]} Sold to: #{record ["give_for"]} Trading date: #{ record ["date"]}"  %>
     <% end %>
     <% result2 = connection.exec("SELECT * FROM crops WHERE quality = false;")%>
     <% data2 = [] %>
