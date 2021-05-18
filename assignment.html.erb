@@ -1,43 +1,40 @@
 <html>
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
   </head>
   <body>
-    <h1>Web technology</h1>
+    <h1>Web Technology</h1>
     <% require 'pg' %>
     <% connection = PG::connect(dbname: "goya") %>
     <% connection.internal_encoding = "UTF-8" %>
     <form action="indicate.cgi" method="POST">
-       Please enter the characters below<br><br>
-       <!-Assign the data you want to send to value->
-       <!-Use name = "goya" as a marker for information->
-      <input type="text"  name="input" ><br>
-      <input type="submit" name="send" >
+       Please enter the test.<Br><Br>
+      <input type="text" name="input"><br>
+      <input type="submit" name="send">
     </form>
-    <% result = connection.exec("SELECT * FROM crops WHERE give_for <> '自家消費';") %>
+    <% result = connection.exec("SELECT * FROM crops WHERE give_for <> '自家消費';")%>
     <% data = [] %>
     <% result.each do |record| %>
-      <%  data << "The size of bitter gourd：#{record["weight"]}　Who sold：#{record["give_for"]}" %>
+      <%   data << "Bitter gourd length: #{record ["length"]}　Weight: #{record ["weight"]} Quality: #{ record ["quality"]} Sold to: #{record ["give_for"]} Trading date: #{ record ["date"]}"  %>
+    <% end %>
+    <% result2 = connection.exec("SELECT * FROM crops WHERE quality = false;")%>
+    <% data2 = [] %>
+    <% result2.each do |record|%>
+      <%   data2 << "Bitter gourd length: #{record ["length "]}　Weight: #{record ["weight"]} Quality: #{record ["quality"]} Sold to: #{record ["give_for"]} Trading date: #{record ["date"]}" %>
     <% end %>
     <form action="goya.cgi" method="POST">
-       Press the button below to jump to the information page of the size of bitter gourd and the person who sold it.<br><br>
+       If you press the button below, you will be taken to the bitter gourd trading information page other than self-consumption.<Br>
        <!-Assign the data you want to send to value->
        <!-Use name = "goya" as a marker for information->
       <input type="text" name="goya" value="<%= data.join(' ') %>">
       <input type="submit" name="send" >
     </form>
-    <br><br>
-       <% result = connection.exec("select quality from crops WHERE quality=false;") %>
-       <% data = [] %>
-       <% result.each do |record| %>
-         <% data << "quality : #{record["quality"]}" %>
-       <% end %>
-      <form action="goya.cgi" method="POST">
-        If you press the button below you will be taken to the information page of the poor quality<br><br>
-        <!-Assign the data you want to send to value->
-        <!-Use name = "goya" as a marker for information->
-        <input type="text" name="quality" value="<%= data.join(' ') %>">
-        <input type="submit" name="send">
-      </form>
-</body>
+    <form action="goya.cgi" method="POST">
+      Press the button below to jump to the bad quality bitter gourd information page.<Br>
+      <!-Assign the data you want to send to value->
+      <!-Use name = "goya" as a marker for information->
+     <input type="text" name="goya" value="<%= data2.join(' ') %>">
+     <input type="submit" name="send" >
+    </form>
+  </body>
 </html>
